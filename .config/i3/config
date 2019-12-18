@@ -43,10 +43,10 @@ bindsym $mod+d exec dmenu_run
 # bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 
 # change focus
-bindsym $mod+j focus left
-bindsym $mod+k focus down
-bindsym $mod+l focus up
-bindsym $mod+semicolon focus right
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
@@ -55,10 +55,10 @@ bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 
 # move focused window
-bindsym $mod+Shift+j move left
-bindsym $mod+Shift+k move down
-bindsym $mod+Shift+l move up
-bindsym $mod+Shift+semicolon move right
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Shift+Left move left
@@ -67,7 +67,7 @@ bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
 # split in horizontal orientation
-bindsym $mod+h split h
+bindsym $mod+Shift+v split h
 
 # split in vertical orientation
 bindsym $mod+v split v
@@ -92,10 +92,14 @@ bindsym $mod+a focus parent
 # focus the child container
 #bindsym $mod+d focus child
 
+set $workspace1 "1: Terminal "
+set $workspace2 "2: Chromium "
+set $workspace3 "3: Doublecmd "
+
 # switch to workspace
-bindsym $mod+1 workspace 1
-bindsym $mod+2 workspace 2
-bindsym $mod+3 workspace 3
+bindsym $mod+1 workspace $workspace1
+bindsym $mod+2 workspace $workspace2
+bindsym $mod+3 workspace $workspace3
 bindsym $mod+4 workspace 4
 bindsym $mod+5 workspace 5
 bindsym $mod+6 workspace 6
@@ -105,9 +109,9 @@ bindsym $mod+9 workspace 9
 bindsym $mod+0 workspace 10
 
 # move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace 1
-bindsym $mod+Shift+2 move container to workspace 2
-bindsym $mod+Shift+3 move container to workspace 3
+bindsym $mod+Shift+1 move container to workspace $workspace1
+bindsym $mod+Shift+2 move container to workspace $workspace2
+bindsym $mod+Shift+3 move container to workspace $workspace3
 bindsym $mod+Shift+4 move container to workspace 4
 bindsym $mod+Shift+5 move container to workspace 5
 bindsym $mod+Shift+6 move container to workspace 6
@@ -115,6 +119,9 @@ bindsym $mod+Shift+7 move container to workspace 7
 bindsym $mod+Shift+8 move container to workspace 8
 bindsym $mod+Shift+9 move container to workspace 9
 bindsym $mod+Shift+0 move container to workspace 10
+
+assign [class="Chromium"] $workspace2
+assign [class="Doublecmd"] $workspace3
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -152,7 +159,9 @@ bindsym $mod+r mode "resize"
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-        status_command i3status
+        font pango:monospace 8, FontAwesome 8
+        #status_command i3status
+        status_command i3blocks -c ~/.config/i3/i3blocks.conf
 }
 
 
@@ -163,6 +172,30 @@ bar {
 exec "~/.config/i3/ToggleTouchpad.sh"   # turn off touchpad
 exec "start-pulseaudio-x11"             # enable sounds
 
+exec "setxkbmap -layout us,ru"
+exec "setxkbmap -option 'grp:alt_shift_toggle'"
+
+exec "ipb -t 180 -v 15"                 # iPBattery
+
+exec_always "feh --bg-fill ~/Pictures/desktop/artwork-1575411379877-3747.jpg"
+
+
+#######################
+# iP: colors
+#######################
+
+set $bg-color 	         #2f343f
+set $inactive-bg-color   #2f343f
+set $text-color          #f3f4f5
+set $inactive-text-color #676E7D
+set $urgent-bg-color     #E53935
+
+# window colors
+#                       border              background         text                 indicator
+client.focused          $bg-color           $bg-color          $text-color          #00ff00
+client.unfocused        $inactive-bg-color $inactive-bg-color $inactive-text-color #00ff00
+client.focused_inactive $inactive-bg-color $inactive-bg-color $inactive-text-color #00ff00
+client.urgent           $urgent-bg-color    $urgent-bg-color   $text-color          #00ff00
 
 #######################
 # iP: Custom key controls
@@ -180,12 +213,21 @@ bindsym XF86MonBrightnessDown exec brightlight -d 50
 # Touchpad controls
 bindsym XF86TouchpadToggle exec "~/.config/i3/ToggleTouchpad.sh"
 
+# Sleep mode
+bindsym XF86Sleep exec "i3lock --color=343134 && systemctl suspend"
+
+# locker
+bindsym $mod+Shift+x exec i3lock --color=343134
+
+# Screenshot
+bindsym Print exec gnome-screenshot
+
 #######################
 # iP: backup
 #######################
 
-## Config initializer
-# i3-config-wizard
+# i3-config-wizard      # config initializer
+# ~/.config/i3/config   # config path
 
 ## Find out available keys:
 # xev
@@ -195,8 +237,22 @@ bindsym XF86TouchpadToggle exec "~/.config/i3/ToggleTouchpad.sh"
 ## in case of xbacklight not working
 # https://github.com/multiplexd/brightlight
 # sudo apt-get install libbsd-dev
+# /sys/class/backlight/intel_backlight/brigtness
+
+## making brightlight work by default (without manual sudo chmod)
+# sudo touch /etc/rc.local
+# sudo chmod +x /etc/rc.local
+# sudo vim /etc/systemd/system/rc-local.service
+# sudo systemctl enable rc-local
+# sudo systemctl start rc-local
 
 ## Software brightness
 # xrandr | grep " connected" | cut -f1 -d " "
 # eDP-1-1
 # xrandr --output eDP-1-1 --brightness 0.5
+
+## Sleep mode (laptop lid)
+# sudo vim /etc/systemd/logind.conf
+# HandleLidSwitch=ignore
+# HandleLidSwitch=suspend
+

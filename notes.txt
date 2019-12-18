@@ -1,0 +1,173 @@
+// Removing Debian:
+https://www.howtogeek.com/141818/how-to-uninstall-a-linux-dual-boot-system-from-your-computer/
+
+// Programs:
+NordVPN
+Android Studio
+Sublime / Vim
+gThumb
+GNOME Tweaks
+Chromium
+htop
+Nautilus || Double Commander
+hexedit
+
+// No Wi-Fi Adapter Found:
+sudo apt-get install --reinstall bcmwl-kernel-source
+
+// Microphone in Headset Problem
+1. Edit file "/etc/modprobe.d/alsa-base.conf" as root
+2. Add "options snd-hda-intel model=,dell-headset-multi" to the last line
+
+// NordVPN
+sudo apt-get install ./nordvpn-release_1.0.0_all.deb
+sudo apt-get update
+sudo apt-get install nordvpn
+nordvpn --help
+nordvpn connect
+nordvpn status
+nordvpn disconnect
+
+Ctrl+Alt+T
+Win+D
+Win+Space
+
+// Android Studio /dev/kvm device permission denied:
+sudo apt install qemu-kvm
+ls -al /dev/kvm
+grep kvm /etc/group
+whoami
+sudo adduser $USER kvm
+https://stackoverflow.com/questions/37300811/android-studio-dev-kvm-device-permission-denied
+
+
+// Anaconda, Jupyter Notebook
+cd Downloads
+wget https://repo.anaconda.com/archive/Anaconda3-2019.07-Linux-x86_64.sh
+sudo chmod +x https://repo.anaconda.com/archive/Anaconda3-2019.07-Linux-x86_64.sh
+./Anaconda3-2019.07-Linux-x86_64.sh
+// Jupyter Notebook and browser (Chrome) file access issue
+pip install notebook==5.6.0
+// Jupyter Notebook. Connecting to kernel issue (tornado 6.0.3)
+pip install tornado==5
+
+// Text Editor
+Sublime (subl)  -- GUI
+Vim (vim)       -- Console
+
+// tmux
+tmux list-sessions
+tmux kill-session -t NUM
+Ctrl+b c Create a new window (with shell)
+Ctrl+b w Choose window from a list
+Ctrl+b 0 Switch to window 0 (by number )
+Ctrl+b , Rename the current window
+Ctrl+b % Split current pane horizontally into two panes
+Ctrl+b " Split current pane vertically into two panes
+Ctrl+b o Go to the next pane
+Ctrl+b ; Toggle between the current and previous pane
+Ctrl+b x Close the current pane
+Ctrl+b [ Navigation mode, 'q' to quit
+
+// SMB Server
+/srv/samba/share
+/etc/samba/smb.conf
+sudo service smbd restart
+/home/vova/Share
+
+// Android Studio
+Ctrl+Q                // Открыть документацию.
+Ctrl+Alt+L            // Форматирует текущий файл.
+Ctrl+Alt+Shift+L      // Форматирует текущий файл (расширенная настройка).
+Ctrl+Alt+V            // Вынести блок кода в переменную.
+Ctrl+B                // Перейти к определению (переменной, класса, ...)
+
+// Chromium extensions installing problem
+/etc/chromium-browser/default
+CHROMIUM_FLAGS="--user-data-dir"
+
+// CUDA
+sudo apt update
+sudo apt upgrade
+sudo apt install nvidia-cuda-toolkit
+ubuntu-drivers devices
+sudo apt install nvidia-driver-430
+# reboot
+
+// Scrolling Bug
+imwheel
+
+// Double Commander
+/usr/lib/doublecmd/
+Ctrl+M      // Multi-Rename Tool
+Ctrl+R      // Refresh actual panel
+F9          // Open Terminal
+Alt+M       // Show/Hide main menu
+Ctrl+.      // Show system files
+Alt+F1, Alt+F2      // Change drive
+Alt+Z               // Same directory for opposite panel
+Ctrl+Shift+C        // Copy full path to selected directory
+
+// Packages Removing
+// https://askubuntu.com/questions/187888/what-is-the-correct-way-to-completely-remove-an-application
+sudo apt-get remove __NAME__
+sudo apt-get purge __NAME__
+sudo apt-get autoremove
+
+// i3wm
+i3lock          // lock
+Win+Shift+E     // log out
+sudo poweroff   // shut down
+
+// Network Manager
+nmcli c                 // List of saved connections
+nmcli d                 // List of current connections
+nmcli d wifi rescan
+nmcli d wifi list       // List of available WiFi hotspots
+nmcli d wifi connect _ password _
+nmcli con down [id] _           // Disconnect
+nmcli con up [id] _             // Connect to network from "nmcli c"
+nmcli connection delete id _    // Forget network
+nmcli d connect enp2s0          // Connect to ethernet
+
+# Bluetooth
+## Doesn't see any device and isn't seen by anyone
+    https://askubuntu.com/questions/632336/bluetooth-broadcom-43142-isnt-working/632348#632348
+## Turning on/off
+    rfkill list
+    rfkill [unblock | block] bluetooth
+    sudo service bluetooth [start | restart | stop]
+## terminal
+    bluetoothctl
+        show
+        scan on
+        devices
+        help
+## GUI
+    blueman-applet
+## debugging
+    dmesg | grep Blue
+    sudo service bluetooth status
+    lsusb
+
+# Terminal Shortcuts
+Ctrl+A, Ctrl+E
+Ctrl+U, Ctrl+K
+Ctrl+W
+Alt+b, Alt+f
+
+# Programming
+valgrind        // detects memory leaks
+
+# gThumb (image viewer)
+F8      // menu with images in current directory
+i       // image info
+
+# FTP server (vsftpd)
+https://help.ubuntu.ru/wiki/руководство_по_ubuntu_server/файловые_сервера/ftp_server
+/etc/vsftpd.conf
+
+# SSH server
+https://www.cyberciti.biz/faq/ubuntu-linux-install-openssh-server/
+
+
